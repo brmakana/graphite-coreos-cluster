@@ -1,0 +1,6 @@
+[template]
+keys        = [ "/services/carboncache/" ]
+owner       = "www-data"
+mode        = "0644"
+src         = "carbon.conf.tmpl"
+dest        = "/var/lib/graphite/conf/carbon.conf"

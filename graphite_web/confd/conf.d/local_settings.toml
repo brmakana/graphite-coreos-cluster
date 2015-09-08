@@ -1,0 +1,6 @@
+[template]
+keys        = [ "/services/carboncache/" ]
+owner       = "www-data"
+mode        = "0644"
+src         = "local_settings.py.tmpl"
+dest        = "/var/lib/graphite/webapp/graphite/local_settings.py"

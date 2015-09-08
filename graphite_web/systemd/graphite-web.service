@@ -1,0 +1,16 @@
+[Unit]
+Description=graphite-web
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill graphite-web
+ExecStartPre=-/usr/bin/docker rm graphite-web
+ExecStartPre=/usr/bin/docker pull makana.io/makanab/graphiteweb
+ExecStart=/bin/sh -c "/usr/bin/docker run --rm --name graphite-web -e HOST_IP=$COREOS_PUBLIC_IPV4 -v /var/lib/graphite/storage/whisper -v /mnt/elasticsearch:/var/lib/elasticsearch -p 80:80 -p 8080:8080 makana.io/makanab/graphiteweb"
+ExecStartPost=/bin/sh -c "/usr/bin/etcdctl set /services/graphiteweb $COREOS_PUBLIC_IPV4"
+ExecStop=/usr/bin/docker stop graphite-web
+ExecStopPost=/usr/bin/etcdctl rm /services/graphiteweb
+
+[X-Fleet]
+X-Conflicts=carbon-cache@*.service
