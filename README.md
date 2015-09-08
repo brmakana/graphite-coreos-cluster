@@ -36,3 +36,5 @@ A Graphite cluster running on CoreOS
     ```
     
 6. You should now be able to hit Graphite on port 80 of the host running graphite_web, and grafana at /grafana/index.html#/dashboard/file/default.json
+
+7. Have your metric clients send stats to the carbon-relay host
