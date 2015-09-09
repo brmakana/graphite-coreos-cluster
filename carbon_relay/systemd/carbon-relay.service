@@ -7,8 +7,8 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill carbon-relay
 ExecStartPre=-/usr/bin/docker rm carbon-relay
 ExecStartPre=/usr/bin/docker pull makana.io/makanab/carbonrelay
-ExecStart=/bin/sh -c "/usr/bin/docker run --rm --name carbon-relay -v /var/lib/graphite/storage/whisper -e HOST_IP=$COREOS_PUBLIC_IPV4 -p 2003:2003 -p 2004:2004 -p 7002:7002 makana.io/makanab/carbonrelay"
-ExecStartPost=/bin/sh -c "/usr/bin/etcdctl set /services/carbonrelay $COREOS_PUBLIC_IPV4"
+ExecStart=/bin/sh -c "/usr/bin/docker run --rm --name carbon-relay -v /var/lib/graphite/storage/whisper -e HOST_IP=$COREOS_PRIVATE_IPV4 -p 2003:2003 -p 2004:2004 -p 7002:7002 makana.io/makanab/carbonrelay"
+ExecStartPost=/bin/sh -c "/usr/bin/etcdctl set /services/carbonrelay $COREOS_PRIVATE_IPV4"
 ExecStop=/usr/bin/docker stop carbon-relay
 ExecStopPost=/usr/bin/etcdctl rm /services/carbonrelay
 

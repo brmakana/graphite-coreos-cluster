@@ -16,7 +16,8 @@ until confd -onetime -node $ETCD -config-file /etc/confd/conf.d/local_settings.t
 done
 
 # set the host IP for Grafana
-sed -i "s/__GRAPHITE_HOST__/$HOST_IP/" /src/grafana/dist/config.js
+echo "Setting graphite host (for public facing calls) to ${GRAPHITE_HOST}"
+sed -i "s/__GRAPHITE_HOST__/$GRAPHITE_HOST/" /src/grafana/dist/config.js
 
 # Start
 echo "[graphite-web] starting supervisord"
