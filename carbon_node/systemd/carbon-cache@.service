@@ -10,7 +10,7 @@ ExecStartPre=/usr/bin/docker pull makana.io/makanab/carboncache
 ExecStart=/usr/bin/docker run --rm --name carbon-cache-%i -p 2003:2003 -p 2004:2004 -p 7002:7002 -p 80:80 -p 8080:8080 -v /mnt/graphite:/var/lib/graphite/storage/whisper makana.io/makanab/carboncache
 ExecStartPost=/bin/sh -c "/usr/bin/etcdctl set /services/carboncache/$COREOS_PRIVATE_IPV4 carbon-cache-%i"
 ExecStop=-/usr/bin/docker stop carbon-cache-%i
-ExecStopPost=-/bin/sh -c "/usr/bin/etcdctl rm /services/carboncache/$COREOS_PUBLIC_IPV4"
+ExecStopPost=-/bin/sh -c "/usr/bin/etcdctl rm /services/carboncache/$COREOS_PRIVATE_IPV4"
 
 [X-Fleet]
 X-Conflicts=%p@*.service
