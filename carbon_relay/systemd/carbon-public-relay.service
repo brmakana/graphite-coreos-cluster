@@ -1,0 +1,16 @@
+[Unit]
+Description=carbon-public-relay
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill carbon-public-relay
+ExecStartPre=-/usr/bin/docker rm carbon-public-relay
+ExecStartPre=/usr/bin/docker pull makana.io/makanab/carbonrelay:public.1
+ExecStart=/bin/sh -c "/usr/bin/docker run --rm --name carbon-public-relay -v /home/core/carbon_relay:/var/lib/graphite/conf -v /var/lib/graphite/storage/whisper -e IGNORE_ETCD=true -e HOST_IP=$COREOS_PRIVATE_IPV4 -p 2003:2003 -p 2004:2004 makana.io/makanab/carbonrelay:public.1"
+ExecStartPost=/bin/sh -c "/usr/bin/etcdctl set /services/carbonpublicrelay $COREOS_PRIVATE_IPV4"
+ExecStop=/usr/bin/docker stop carbon-public-relay
+ExecStopPost=/usr/bin/etcdctl rm /services/carbonpublicrelay
+
+[X-Fleet]
+X-Conflicts=carbon-cache@*.service
